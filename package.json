@@ -1,0 +1,25 @@
+{
+  "name": "server",
+  "description": "server",
+  "version": "0.0.0",
+  "author": {
+    "name": "serandives",
+    "email": "serandives@gmail.com"
+  },
+  "dependencies": {
+    "nconf": "0.8.4",
+    "vhost": "3.0.2",
+    "async": "2.0.1",
+    "express": "4.*",
+    "mongoose": "4.*",
+    "logger": "serandules/logger#master",
+    "accounts": "serandules/accounts#master"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/serandives/server.git"
+  },
+  "clients": {
+    "accounts": "master"
+  }
+}
