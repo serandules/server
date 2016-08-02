@@ -13,11 +13,7 @@ mongoose.connect(mongourl);
 
 var domains = ['accounts', 'autos'];
 
-var envs = require('./package.json').environments;
-
-Object.keys(envs).forEach(function (name) {
-    nconf.set(name, envs[name]);
-});
+nconf.defaults(require('./package.json').environments);
 
 var db = mongoose.connection;
 db.on('error', function (err) {
