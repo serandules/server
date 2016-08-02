@@ -1,4 +1,4 @@
-var log = require('logger')('accounts-services');
+var log = require('logger')('server');
 var nconf = require('nconf').argv().env();
 var async = require('async');
 var vhost = require('vhost');
@@ -11,7 +11,7 @@ var app = express();
 
 mongoose.connect(mongourl);
 
-var domains = ['accounts'];
+var domains = ['accounts', 'autos'];
 
 var envs = require('./package.json').environments;
 

@@ -13,13 +13,15 @@
     "express": "4.*",
     "mongoose": "4.*",
     "logger": "serandules/logger#master",
-    "accounts": "serandules/accounts#master"
+    "accounts": "serandules/accounts#master",
+    "autos": "serandules/autos#master"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/serandives/server.git"
   },
   "environments": {
-    "ACCOUNTS_CLIENT": "master"
+    "ACCOUNTS_CLIENT": "master",
+    "AUTOS_CLIENT": "master"
   }
 }
