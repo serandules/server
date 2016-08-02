@@ -13,10 +13,10 @@ mongoose.connect(mongourl);
 
 var domains = ['accounts'];
 
-var clients = require('./package.json').clients;
+var envs = require('./package.json').environments;
 
-Object.keys(clients).forEach(function (name) {
-    nconf.set(name.toUpperCase() + '_CLIENT', clients[name]);
+Object.keys(envs).forEach(function (name) {
+    nconf.set(name, envs[name]);
 });
 
 var db = mongoose.connection;

@@ -19,7 +19,7 @@
     "type": "git",
     "url": "git://github.com/serandives/server.git"
   },
-  "clients": {
-    "accounts": "master"
+  "environments": {
+    "ACCOUNTS_CLIENT": "master"
   }
 }
