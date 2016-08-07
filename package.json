@@ -22,6 +22,6 @@
   },
   "environments": {
     "ACCOUNTS_CLIENT": "master",
-    "AUTOS_CLIENT": "414a93d78be582eaecd14f026b75bc416a346e15"
+    "AUTOS_CLIENT": "2e44f805c0fea806bd4f2669c57f6b86c061f476"
   }
 }
