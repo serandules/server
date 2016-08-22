@@ -4,6 +4,7 @@ var async = require('async');
 var vhost = require('vhost');
 var mongoose = require('mongoose');
 var express = require('express');
+var cors = require('cors');
 
 var mongourl = nconf.get('MONGODB_URI');
 
@@ -38,6 +39,7 @@ db.once('open', function () {
         if (err) {
             throw err;
         }
+        app.use(cors());
         o.forEach(function (o) {
             var host = o.domain + '.serandives.com';
             app.use(vhost(host, o.app));
