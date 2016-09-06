@@ -1,0 +1,12 @@
+export NODE_ENV=development
+export PORT=4000
+export MONGODB_URI=mongodb://127.0.0.1:27017/serandives
+export SERVER=http://development.{sub}.serandives.com:4000
+export CDN=http://localhost:4040
+# https://d2wwbq608e82yj.cloudfront.net
+export AWS_KEY=AKIAJGHSC4WKREUUKGBQ
+export AWS_SECRET=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
+export CLIENT_ACCOUNTS=master
+export CLIENT_AUTOS=master
+
+# for dir in *; do echo $dir; cd $dir; ln -s ~/sources/serandives/serandomps/$dir master; cd ..; done

@@ -40,8 +40,10 @@ db.once('open', function () {
             throw err;
         }
         app.use(cors());
+        var env = nconf.get('NODE_ENV');
+        var prefix = (!env || env === 'production') ? '' : env + '.';
         o.forEach(function (o) {
-            var host = o.domain + '.serandives.com';
+            var host = prefix + o.domain + '.serandives.com';
             app.use(vhost(host, o.app));
             log.info('host %s was registered', host);
         });
