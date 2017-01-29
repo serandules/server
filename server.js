@@ -12,7 +12,7 @@ var app = express();
 
 mongoose.connect(mongourl);
 
-var domains = ['accounts', 'autos'];
+var domains = ['accounts', 'advertising', 'autos'];
 
 nconf.defaults(require('./package.json').environments);
 

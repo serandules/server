@@ -7,6 +7,7 @@ export CDN=http://localhost:4040
 export AWS_KEY=KEY
 export AWS_SECRET=SECRET
 export CLIENT_ACCOUNTS=master
+export CLIENT_ADVERTISING=master
 export CLIENT_AUTOS=master
 
 # for dir in *; do echo $dir; cd $dir; ln -s ~/sources/serandives/serandomps/$dir master; cd ..; done
