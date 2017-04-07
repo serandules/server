@@ -3,10 +3,10 @@
   "mongodbUri": "mongodb://127.0.0.1:27017/serandives-test",
   "server": "http://test.{sub}.serandives.com:4000",
   "cdn": "http://localhost:4040",
-  "awsKey": "AKIAJGL2ABB5ACOVXFKA",
-  "awsSecret": "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",
+  "awsKey": "",
+  "awsSecret": "",
   "facebookKey": "911082242310402",
-  "facebookSecret": "5ea5fa59190b186a449a47048faa00b1",
+  "facebookSecret": "",
   "services": [
     {"name": "config-service", "version": "master", "domain": "accounts"},
     {"name": "token-service", "version": "master", "domain": "accounts"},
