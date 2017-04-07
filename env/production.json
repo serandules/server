@@ -1,0 +1,11 @@
+{
+  "PORT": "4000",
+  "MONGODB_URI": "mongodb://127.0.0.1:27017/serandives",
+  "SERVER": "http://development.{sub}.serandives.com:4000",
+  "CDN": "http://localhost:4040",
+  "AWS_KEY": "",
+  "AWS_SECRET": "",
+  "CLIENT_ACCOUNTS": "master",
+  "CLIENT_AUTOS": "master",
+  "CLIENT_ADVERTISING": "master"
+}

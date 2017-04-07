@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "nconf": "0.8.4",
+    "shelljs": "0.7.7",
     "vhost": "3.0.2",
     "async": "2.0.1",
     "express": "4.*",
