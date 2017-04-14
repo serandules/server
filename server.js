@@ -3,6 +3,8 @@ var nconf = require('nconf').argv().env();
 var mongoose = require('mongoose');
 var server = require('./index');
 
+mongoose.Promise = global.Promise;
+
 var env = nconf.get('env');
 
 nconf.defaults(require('./env/' + env + '.json'));
@@ -15,7 +17,7 @@ server.init(function (err) {
     mongoose.connect(mongourl);
     var db = mongoose.connection;
     db.on('error', function (err) {
-        log.error(err);
+        log.error('mongodb connection error: %e', err);
     });
     db.once('open', function () {
         log.info('connected to mongodb');
