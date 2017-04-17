@@ -15,7 +15,7 @@ var server;
 
 exports.init = function (done) {
     async.eachLimit(services, 1, function (service, installed) {
-        if (env === 'development' || env === 'test') {
+        if (env === 'development') {
             return installed();
         }
         shell.exec('npm install ' + 'serandules/' + service.name + '#' + service.version, installed);
