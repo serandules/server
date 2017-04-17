@@ -14,10 +14,7 @@
     "express": "4.*",
     "mongoose": "4.*",
     "cors": "2.7.1",
-    "logger": "serandules/logger#master",
-    "accounts": "serandules/accounts#master",
-    "advertising": "serandules/advertising#master",
-    "autos": "serandules/autos#master"
+    "logger": "serandules/logger#master"
   },
   "repository": {
     "type": "git",
