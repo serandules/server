@@ -18,7 +18,7 @@ exports.init = function (done) {
         if (env === 'development') {
             return installed();
         }
-        if (o.service) {
+        if (o.path) {
             return installed();
         }
         shell.exec('npm install ' + 'serandules/' + o.name + '#' + o.version, installed);
@@ -39,13 +39,9 @@ exports.start = function (done) {
         services.forEach(function (o) {
             var router = express();
             router.use(serandi.locate(o.prefix + '/'));
-            var routes = o.service;
-            if (routes) {
-                routes(router);
-                return app.use(o.prefix, router);
-            }
+            var routes;
             try {
-                routes = require(o.name);
+                routes = require(o.path || o.name);
             } catch (e) {
                 return done(e);
             }
