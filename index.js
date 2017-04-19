@@ -36,7 +36,12 @@ exports.start = function (done) {
         services.forEach(function (service) {
             var router = express();
             router.use(serandi.locate(service.prefix + '/'));
-            var routes = require(service.name);
+            var routes;
+            try {
+                routes = require(service.name);
+            } catch (e) {
+                return done(e);
+            }
             routes(router);
             app.use(service.prefix, router);
         });
