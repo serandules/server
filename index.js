@@ -14,11 +14,14 @@ var services = nconf.get('services');
 var server;
 
 exports.init = function (done) {
-    async.eachLimit(services, 1, function (service, installed) {
+    async.eachLimit(services, 1, function (o, installed) {
         if (env === 'development') {
             return installed();
         }
-        shell.exec('npm install ' + 'serandules/' + service.name + '#' + service.version, installed);
+        if (o.service) {
+            return installed();
+        }
+        shell.exec('npm install ' + 'serandules/' + o.name + '#' + o.version, installed);
     }, done);
 };
 
@@ -33,17 +36,21 @@ exports.start = function (done) {
     Object.keys(domains).forEach(function (name) {
         var app = express();
         var services = domains[name];
-        services.forEach(function (service) {
+        services.forEach(function (o) {
             var router = express();
-            router.use(serandi.locate(service.prefix + '/'));
-            var routes;
+            router.use(serandi.locate(o.prefix + '/'));
+            var routes = o.service;
+            if (routes) {
+                routes(router);
+                return app.use(o.prefix, router);
+            }
             try {
-                routes = require(service.name);
+                routes = require(o.name);
             } catch (e) {
                 return done(e);
             }
             routes(router);
-            app.use(service.prefix, router);
+            app.use(o.prefix, router);
         });
         var domain = (env === 'test') ? 'test' : domainPrefix + o.domain;
         var host = domain + '.serandives.com';
