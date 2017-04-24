@@ -48,7 +48,7 @@ exports.start = function (done) {
             routes(router);
             app.use(o.prefix, router);
         });
-        var domain = (env === 'test') ? 'test' : domainPrefix + o.domain;
+        var domain = (env === 'test') ? 'test' : domainPrefix + name;
         var host = domain + '.serandives.com';
         apps.use(vhost(host, app));
         log.info('host %s was registered', host);
