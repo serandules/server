@@ -33,26 +33,34 @@ exports.start = function (done) {
         domain.push(service);
     });
     var domainPrefix = (!env || env === 'production') ? '' : env + '.';
-    Object.keys(domains).forEach(function (name) {
-        var app = express();
-        var services = domains[name];
-        services.forEach(function (o) {
+    var i;
+    var service;
+    var name;
+    var app;
+    for (name in domains) {
+        if (!domains.hasOwnProperty(name)) {
+            continue;
+        }
+        app = express();
+        services = domains[name];
+        for (i = 0; i < services.length; i++) {
+            service = services[i];
             var router = express();
-            router.use(serandi.locate(o.prefix + '/'));
+            router.use(serandi.locate(service.prefix + '/'));
             var routes;
             try {
-                routes = require(o.path || o.name);
+                routes = require(service.path || service.name);
             } catch (e) {
                 return done(e);
             }
             routes(router);
-            app.use(o.prefix, router);
-        });
+            app.use(service.prefix, router);
+        }
         var domain = (env === 'test') ? 'test' : domainPrefix + name;
         var host = domain + '.serandives.com';
         apps.use(vhost(host, app));
         log.info('host %s was registered', host);
-    });
+    }
     var port = nconf.get('port');
     server = apps.listen(port, function (err) {
         if (err) {
