@@ -37,14 +37,15 @@ exports.start = function (done) {
     var service;
     var name;
     var app;
+    var servicez
     for (name in domains) {
         if (!domains.hasOwnProperty(name)) {
             continue;
         }
         app = express();
-        services = domains[name];
-        for (i = 0; i < services.length; i++) {
-            service = services[i];
+        servicez = domains[name];
+        for (i = 0; i < servicez.length; i++) {
+            service = servicez[i];
             var router = express();
             router.use(serandi.locate(service.prefix + '/'));
             var routes;
