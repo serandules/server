@@ -1,13 +1,14 @@
 var log = require('logger')('server:server');
 var nconf = require('nconf').argv().env();
 var mongoose = require('mongoose');
-var server = require('./index');
 
 mongoose.Promise = global.Promise;
 
 var env = nconf.get('env');
 
 nconf.defaults(require('./env/' + env + '.json'));
+
+var server = require('./index');
 
 server.init(function (err) {
     if (err) {
