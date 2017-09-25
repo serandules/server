@@ -1,22 +1,26 @@
 {
-  "port": "4000",
+  "port": "6000",
   "mongodbUri": "mongodb://127.0.0.1:27017/serandives-test",
-  "server": "http://test.{sub}.serandives.com:4000",
+  "server": "http://development.{sub}.serandives.com:6000",
   "cdn": "http://localhost:4040",
+  "facebookId": "123456",
   "awsKey": "",
   "awsSecret": "",
-  "facebookKey": "911082242310402",
-  "facebookSecret": "",
+  "domains": {
+    "accounts": "master",
+    "advertising": "master",
+    "autos": "master"
+  },
+  "clients": {
+    "accounts": "master",
+    "advertising": "master",
+    "autos": "master"
+  },
   "services": [
-    {"name": "config-service", "version": "master", "domain": "accounts"},
-    {"name": "token-service", "version": "master", "domain": "accounts"},
-    {"name": "user-service", "version": "master", "domain": "accounts"},
-    {"name": "client-service", "version": "master", "domain": "accounts"},
-    {"name": "menu-service", "version": "master", "domain": "accounts"}
-  ],
-  "clients": [
-    {"name": "accounts", "version": "master"},
-    {"name": "autos", "version": "master"},
-    {"name": "advertising", "version": "master"}
+    {"name": "service-configs", "version": "master", "domain": "accounts", "prefix": "/apis/v/configs"},
+    {"name": "service-clients", "version": "master", "domain": "accounts", "prefix": "/apis/v/clients"},
+    {"name": "service-users", "version": "master", "domain": "accounts", "prefix": "/apis/v/users"},
+    {"name": "service-tokens", "version": "master", "domain": "accounts", "prefix": "/apis/v/tokens"},
+    {"name": "service-vehicles", "version": "master", "domain": "autos", "prefix": "/apis/v/vehicles"}
   ]
 }

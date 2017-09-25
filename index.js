@@ -16,7 +16,7 @@ var server;
 
 exports.init = function (done) {
     async.eachLimit(services, 1, function (o, installed) {
-        if (env === 'development') {
+        if (env === 'development' || env === 'test') {
             return installed();
         }
         if (o.path) {
@@ -65,10 +65,13 @@ exports.start = function (done) {
         log.info('host %s was registered', host);
     }
     apps.use(function (err, req, res, next) {
+        if (err.status) {
+            return res.pond(errors.badRequest())
+        }
         log.error(err);
         res.pond(errors.serverError());
     });
-    app.use(function (req, res, next) {
+    apps.use(function (req, res, next) {
         res.pond(errors.notFound());
     });
     var port = nconf.get('port');

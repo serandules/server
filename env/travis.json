@@ -1,0 +1,22 @@
+{
+  "port": "4000",
+  "mongodbUri": "mongodb://127.0.0.1:27017/serandives-test",
+  "server": "http://test.{sub}.serandives.com:4000",
+  "cdn": "http://localhost:4040",
+  "awsKey": "",
+  "awsSecret": "",
+  "facebookKey": "911082242310402",
+  "facebookSecret": "",
+  "services": [
+    {"name": "config-service", "version": "master", "domain": "accounts"},
+    {"name": "token-service", "version": "master", "domain": "accounts"},
+    {"name": "user-service", "version": "master", "domain": "accounts"},
+    {"name": "client-service", "version": "master", "domain": "accounts"},
+    {"name": "menu-service", "version": "master", "domain": "accounts"}
+  ],
+  "clients": [
+    {"name": "accounts", "version": "master"},
+    {"name": "autos", "version": "master"},
+    {"name": "advertising", "version": "master"}
+  ]
+}
