@@ -5,6 +5,7 @@ var async = require('async');
 var vhost = require('vhost');
 var express = require('express');
 var serandi = require('serandi');
+var errors = require('errors');
 var cors = require('cors');
 
 var env = nconf.get('env');
@@ -28,6 +29,7 @@ exports.init = function (done) {
 exports.start = function (done) {
     var domains = {};
     var apps = express();
+    apps.use(serandi.pond);
     services.forEach(function (service) {
         var domain = domains[service.domain] || (domains[service.domain] = []);
         domain.push(service);
@@ -62,6 +64,13 @@ exports.start = function (done) {
         apps.use(vhost(host, app));
         log.info('host %s was registered', host);
     }
+    apps.use(function (err, req, res, next) {
+        log.error(err);
+        res.pond(errors.serverError());
+    });
+    app.use(function (req, res, next) {
+        res.pond(errors.notFound());
+    });
     var port = nconf.get('port');
     server = apps.listen(port, function (err) {
         if (err) {
