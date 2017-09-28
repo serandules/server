@@ -13,7 +13,7 @@
     "async": "2.0.1",
     "express": "4.*",
     "mongoose": "4.*",
-    "cors": "2.7.1",
+    "cors": "2.8.4",
     "logger": "serandules/logger#master"
   },
   "repository": {

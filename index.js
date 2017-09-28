@@ -30,6 +30,7 @@ exports.start = function (done) {
     var domains = {};
     var apps = express();
     apps.use(serandi.pond);
+    apps.use(cors());
     services.forEach(function (service) {
         var domain = domains[service.domain] || (domains[service.domain] = []);
         domain.push(service);
@@ -68,6 +69,7 @@ exports.start = function (done) {
         if (err.status) {
             return res.pond(errors.badRequest())
         }
+        console.error(err);
         log.error(err);
         res.pond(errors.serverError());
     });
