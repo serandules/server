@@ -1,22 +1,20 @@
 {
-  "port": "4000",
-  "mongodbUri": "mongodb://127.0.0.1:27017/serandives-test",
-  "server": "http://test.{sub}.serandives.com:4000",
-  "cdn": "http://localhost:4040",
-  "awsKey": "",
-  "awsSecret": "",
-  "facebookKey": "911082242310402",
-  "facebookSecret": "",
-  "services": [
-    {"name": "config-service", "version": "master", "domain": "accounts"},
-    {"name": "token-service", "version": "master", "domain": "accounts"},
-    {"name": "user-service", "version": "master", "domain": "accounts"},
-    {"name": "client-service", "version": "master", "domain": "accounts"},
-    {"name": "menu-service", "version": "master", "domain": "accounts"}
-  ],
-  "clients": [
-    {"name": "accounts", "version": "master"},
-    {"name": "autos", "version": "master"},
-    {"name": "advertising", "version": "master"}
-  ]
+  "PORT": "4000",
+  "MONGODB_URI": "mongodb://127.0.0.1:27017/serandives-travis",
+  "SERVER": "http://travis.{sub}.serandives.com:4000",
+  "CDN": "http://localhost:4040",
+  "FACEBOOK_ID": "",
+  "FACEBOOK_SECRET": "",
+  "AWS_KEY": "",
+  "AWS_SECRET": "",
+  "CLIENT_ACCOUNTS": "master",
+  "CLIENT_AUTOS": "master",
+  "SERVICE_CONFIGS": "master:accounts:/apis/v/configs",
+  "SERVICE_CLIENTS": "master:accounts:/apis/v/clients",
+  "SERVICE_USERS": "master:accounts:/apis/v/users",
+  "SERVICE_TOKENS": "master:accounts:/apis/v/tokens",
+  "SERVICE_MENUS": "master:accounts:/apis/v/menus",
+  "SERVICE_VEHICLE_MAKES": "master:autos:/apis/v/vehicle-makes",
+  "SERVICE_VEHICLE_MODELS": "master:autos:/apis/v/vehicle-models",
+  "SERVICE_VEHICLES": "master:autos:/apis/v/vehicles"
 }

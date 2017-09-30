@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-var env = nconf.get('env');
+var env = nconf.get('ENV');
 
 nconf.defaults(require('./env/' + env + '.json'));
 
@@ -14,8 +14,8 @@ server.init(function (err) {
     if (err) {
         return log.error(err);
     }
-    var mongourl = nconf.get('mongodbUri');
-    mongoose.connect(mongourl);
+    var mongourl = nconf.get('MONGODB_URI');
+    mongoose.connect(mongourl, {useMongoClient: true});
     var db = mongoose.connection;
     db.on('error', function (err) {
         log.error('mongodb connection error: %e', err);
