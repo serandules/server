@@ -5,9 +5,9 @@ var _ = require('lodash');
 var async = require('async');
 var vhost = require('vhost');
 var express = require('express');
+var cors = require('cors');
 var serandi = require('serandi');
 var errors = require('errors');
-var cors = require('cors');
 
 var env = nconf.get('ENV');
 

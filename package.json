@@ -14,7 +14,10 @@
     "express": "4.*",
     "mongoose": "4.*",
     "cors": "2.8.4",
-    "logger": "serandules/logger#master"
+    "lodash": "4.17.4",
+    "logger": "serandules/logger#master",
+    "errors": "serandules/errors#master",
+    "serandi": "serandules/serandi#master"
   },
   "repository": {
     "type": "git",
