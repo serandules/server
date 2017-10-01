@@ -87,6 +87,11 @@ exports.start = function (done) {
     var apps = express();
     apps.use(serandi.pond);
     apps.use(cors());
+    apps.get('/status', function (req, res) {
+        res.json({
+            status: 'healthy'
+        });
+    });
     modules.forEach(function (module) {
         var domain = domains[module.domain] || (domains[module.domain] = []);
         domain.push(module);
