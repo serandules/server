@@ -39,6 +39,34 @@ var findServices = function () {
     return o;
 };
 
+var findLocals = function () {
+    var key;
+    var name;
+    var o = [];
+    var type = 'local';
+    var prefix = type.toUpperCase() + '_';
+    var all = nconf.get();
+    for (key in all) {
+        if (!all.hasOwnProperty(key)) {
+            continue;
+        }
+        if (key.indexOf(prefix) !== 0) {
+            continue;
+        }
+        name = key.substring(prefix.length);
+        name = name.toLowerCase().replace('_', '-');
+        var value = all[key];
+        var splits = value.split(':');
+        o.push({
+            name: type + '-' + name,
+            path: splits[0],
+            domain: splits[1],
+            prefix: splits[2]
+        });
+    }
+    return o;
+};
+
 var findClients = function () {
     var key;
     var name;
@@ -68,7 +96,7 @@ var findClients = function () {
 
 var server;
 
-var modules = findServices().concat(findClients());
+var modules = findServices().concat(findLocals()).concat(findClients());
 
 exports.install = function (done) {
     async.eachLimit(modules, 1, function (module, installed) {
