@@ -6,6 +6,9 @@
     "name": "serandives",
     "email": "serandives@gmail.com"
   },
+  "scripts": {
+    "postinstall": "install.js"
+  },
   "dependencies": {
     "nconf": "0.8.4",
     "shelljs": "0.7.7",
