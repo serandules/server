@@ -7,7 +7,7 @@
     "email": "serandives@gmail.com"
   },
   "scripts": {
-    "postinstall": "install.js"
+    "postinstall": "./install.js"
   },
   "dependencies": {
     "nconf": "0.8.4",

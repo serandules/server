@@ -1,7 +1,12 @@
 var log = require('logger')('server:install');
-var index = require('./index');
+var nconf = require('nconf').argv().env();
+var env = nconf.get('ENV');
 
-index.install(function (err, modules) {
+nconf.defaults(require('./env/' + env + '.json'));
+
+var server = require('./index');
+
+server.install(function (err, modules) {
     if (err) {
         log.error(err);
         throw e;
