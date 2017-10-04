@@ -10,23 +10,18 @@ nconf.defaults(require('./env/' + env + '.json'));
 
 var server = require('./index');
 
-server.init(function (err) {
-    if (err) {
-        return log.error(err);
-    }
-    var mongourl = nconf.get('MONGODB_URI');
-    mongoose.connect(mongourl, {useMongoClient: true});
-    var db = mongoose.connection;
-    db.on('error', function (err) {
-        log.error('mongodb connection error: %e', err);
-    });
-    db.once('open', function () {
-        log.info('connected to mongodb');
-        server.start(function (err) {
-            if (err) {
-                return log.error(err);
-            }
-        });
+var mongourl = nconf.get('MONGODB_URI');
+mongoose.connect(mongourl, {useMongoClient: true});
+var db = mongoose.connection;
+db.on('error', function (err) {
+    log.error('mongodb connection error: %e', err);
+});
+db.once('open', function () {
+    log.info('connected to mongodb');
+    server.start(function (err) {
+        if (err) {
+            return log.error(err);
+        }
     });
 });
 

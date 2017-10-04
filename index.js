@@ -70,7 +70,7 @@ var server;
 
 var modules = findServices().concat(findClients());
 
-exports.init = function (done) {
+exports.install = function (done) {
     async.eachLimit(modules, 1, function (module, installed) {
         if (env === 'development' || env === 'test') {
             return installed();
