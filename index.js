@@ -153,7 +153,7 @@ exports.start = function (done) {
             routes(router);
             app.use(module.prefix, router);
         }
-        domain = (env === 'test') ? 'test' : domainPrefix + name;
+        domain = (env === 'test' || env === 'travis') ? env : domainPrefix + name;
         host = domain + '.serandives.com';
         apps.use(vhost(host, app));
         log.info('host %s was registered', host);
