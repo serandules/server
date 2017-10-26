@@ -120,6 +120,10 @@ exports.start = function (done) {
             status: 'healthy'
         });
     });
+    if (env !== 'production') {
+        apps.enable('trust proxy');
+        apps.use(serandi.ssl);
+    }
     modules.forEach(function (module) {
         var domain = domains[module.domain] || (domains[module.domain] = []);
         domain.push(module);
