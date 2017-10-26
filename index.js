@@ -120,7 +120,7 @@ exports.start = function (done) {
             status: 'healthy'
         });
     });
-    if (env !== 'production') {
+    if (env === 'production') {
         apps.enable('trust proxy');
         apps.use(serandi.ssl);
     }
