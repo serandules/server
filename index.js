@@ -5,6 +5,7 @@ var _ = require('lodash');
 var async = require('async');
 var vhost = require('vhost');
 var express = require('express');
+var compression = require('compression');
 var cors = require('cors');
 var serandi = require('serandi');
 var errors = require('errors');
@@ -114,6 +115,7 @@ exports.start = function (done) {
     var domains = {};
     var apps = express();
     apps.use(serandi.pond);
+    apps.use(compression());
     apps.use(cors());
     apps.get('/status', function (req, res) {
         res.json({
