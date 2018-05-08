@@ -7,10 +7,11 @@ var vhost = require('vhost');
 var express = require('express');
 var compression = require('compression');
 var cors = require('cors');
+var utils = require('utils');
 var serandi = require('serandi');
 var errors = require('errors');
 
-var env = nconf.get('ENV');
+var env = utils.env();
 
 var findServices = function () {
     var key;
@@ -166,7 +167,7 @@ exports.start = function (done) {
     }
     apps.use(function (err, req, res, next) {
         if (err.status) {
-            return res.pond(errors.badRequest())
+            return res.pond(errors.badRequest());
         }
         console.error(err);
         log.error(err);

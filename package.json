@@ -17,8 +17,10 @@
     "cors": "2.8.4",
     "lodash": "4.17.4",
     "logger": "serandules/logger#master",
+    "utils": "serandules/utils#master",
     "errors": "serandules/errors#master",
     "serandi": "serandules/serandi#master"
+    "throttle": "serandules/throttle#master"
   },
   "repository": {
     "type": "git",

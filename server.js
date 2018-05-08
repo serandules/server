@@ -3,9 +3,11 @@ var nconf = require('nconf').argv().env();
 var fs = require('fs');
 var mongoose = require('mongoose');
 
+var utils = require('utils');
+
 mongoose.Promise = global.Promise;
 
-var env = nconf.get('ENV');
+var env = utils.env();
 
 nconf.defaults(require('./env/' + env + '.json'));
 
@@ -13,9 +15,11 @@ var server = require('./index');
 
 var mongourl = nconf.get('MONGODB_URI');
 
+var ssl = env !== 'development';
+
 mongoose.connect(mongourl, {
     authSource: 'admin',
-    ssl: true
+    ssl: ssl
 });
 
 var db = mongoose.connection;

@@ -1,6 +1,9 @@
 var log = require('logger')('server:install');
 var nconf = require('nconf').argv().env();
-var env = nconf.get('ENV');
+
+var utils = require('utils');
+
+var env = utils.env();
 
 nconf.defaults(require('./env/' + env + '.json'));
 
