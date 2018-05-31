@@ -9,6 +9,7 @@ var compression = require('compression');
 var cors = require('cors');
 var utils = require('utils');
 var serandi = require('serandi');
+var throttle = require('throttle');
 var errors = require('errors');
 
 var env = utils.env();
@@ -116,6 +117,7 @@ exports.start = function (done) {
     var domains = {};
     var apps = express();
     apps.use(serandi.pond);
+    apps.use(throttle.ips());
     apps.use(compression());
     apps.use(cors());
     apps.get('/status', function (req, res) {
