@@ -15,7 +15,7 @@ var server = require('./index');
 
 var mongourl = nconf.get('MONGODB_URI');
 
-var ssl = env !== 'development';
+var ssl = !!nconf.get('MONGODB_SSL');
 
 mongoose.connect(mongourl, {
     authSource: 'admin',

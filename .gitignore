@@ -37,4 +37,8 @@ jspm_packages
 .node_repl_history
 .bootstrap
 
-env/development.json
+env/.production
+env/.staging
+env/.development
+env/.travis
+env/.test
