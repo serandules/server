@@ -9,6 +9,7 @@ var compression = require('compression');
 var cors = require('cors');
 var format = require('string-template');
 var utils = require('utils');
+var util = require('util');
 var serandi = require('serandi');
 var throttle = require('throttle');
 var errors = require('errors');
@@ -35,6 +36,7 @@ var findServices = function () {
     var value = all[key];
     var splits = value.split(':');
     o.push({
+      type: 'service',
       name: type + '-' + name,
       version: splits[0],
       domain: splits[1],
@@ -63,6 +65,7 @@ var findLocals = function () {
     var value = all[key];
     var splits = value.split(':');
     o.push({
+      type: 'local',
       name: type + '-' + name,
       path: splits[0],
       domain: splits[1],
@@ -90,6 +93,7 @@ var findClients = function () {
     name = name.toLowerCase().replace('_', '-');
     var value = all[key];
     o.push({
+      type: 'client',
       name: name,
       version: value,
       domain: name,
@@ -105,14 +109,22 @@ var modules = findServices().concat(findLocals()).concat(findClients());
 
 exports.install = function (done) {
   var services = !!nconf.get('SERVICES');
+  if (!services) {
+    return done();
+  }
   async.eachLimit(modules, 1, function (module, installed) {
-    if (!services) {
-      return installed();
-    }
     if (module.path) {
       return installed();
     }
-    shell.exec('npm install ' + 'serandules/' + module.name + '#' + module.version, installed);
+    var cmd = 'export GITHUB_USERNAME=%s; export GITHUB_PASSWORD=%s; npm install serandules/%s#%s';
+    cmd = util.format(cmd, nconf.get('GITHUB_USERNAME'), nconf.get('GITHUB_PASSWORD'), module.name, module.version);
+    shell.exec(cmd, function (err) {
+      if (err) {
+        return installed(err);
+      }
+      log.info('installed version %s of module %s', module.version, module.name);
+      installed();
+    });
   }, done);
 };
 
@@ -165,12 +177,11 @@ exports.start = function (done) {
         try {
           routes = require(module.path || module.name);
         } catch (e) {
-          console.error(e);
           return done(e);
         }
         routes(router);
         app.use(module.prefix, router);
-        log.info('registering service %s under %s', module.name, name);
+        log.info('registering %s %s under %s', module.type, module.name, name);
       }
       host = format(serverHost, {sub: name});
       apps.use(vhost(host, app));

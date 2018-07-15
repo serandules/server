@@ -1,5 +1,5 @@
 var log = require('logger')('server:server');
-var nconf = require('nconf').argv().env();
+var nconf = require('nconf').use('memory').argv().env();
 var fs = require('fs');
 var mongoose = require('mongoose');
 

@@ -44,7 +44,7 @@ exports.init = function (done) {
       if (err) {
         return found(err);
       }
-      nconf.set(env, version);
+      nconf.set(indexPrefix + name.toUpperCase(), version);
       log.info('using %s version %s', name, version);
       found();
     });

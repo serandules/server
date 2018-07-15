@@ -2,6 +2,8 @@
 FROM node:10-debug
 
 ARG ENV
+ARG GITHUB_USERNAME
+ARG GITHUB_PASSWORD
 
 # set the working directory to /srv/server
 WORKDIR /srv/server
