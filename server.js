@@ -32,7 +32,8 @@ db.once('open', function () {
     log.info('connected to mongodb');
     server.start(function (err) {
         if (err) {
-            return log.error(err);
+            log.error(err);
+            return process.exit(1);
         }
     });
 });
