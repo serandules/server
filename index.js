@@ -137,7 +137,7 @@ exports.start = function (done) {
     var apps = express();
     var serverHost = nconf.get('SERVER_HOST');
     apps.use(serandi.pond);
-    // apps.use(throttle.ips());
+    apps.use(throttle.ips());
     apps.use(compression());
     apps.use(cors());
     apps.get('/status', function (req, res) {
