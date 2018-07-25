@@ -16,6 +16,12 @@ COPY package*.json ./
 RUN apt install -y logrotate
 COPY .logrotate /etc/logrotate.d/server
 
+# install filebeat
+RUN curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-6.3.2-amd64.deb
+RUN dpkg -i filebeat-6.3.2-amd64.deb
+COPY .filebeat.yml /etc/filebeat/filebeat.yml
+
+
 # configure logz.io
 RUN mkdir -p /etc/pki/tls/certs
 RUN wget https://raw.githubusercontent.com/logzio/public-certificates/master/COMODORSADomainValidationSecureServerCA.crt -P /etc/pki/tls/certs
@@ -32,4 +38,4 @@ RUN node install.js
 EXPOSE 80
 
 # start server when the container launches
-CMD ["npm", "start"]
+CMD ["startup.sh"]

@@ -6,7 +6,7 @@ filebeat:
         - /var/log/server.log
       fields:
         logzio_codec: json
-        token: {{API_TOKEN}}
+        token: ${LOGZIO_API_TOKEN}
         type: server
       fields_under_root: true
       encoding: utf-8
