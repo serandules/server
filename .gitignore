@@ -42,3 +42,4 @@ env/.staging
 env/.development
 env/.travis
 env/.test
+env/.docker

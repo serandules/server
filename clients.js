@@ -45,14 +45,14 @@ exports.init = function (done) {
         return found(err);
       }
       nconf.set(indexPrefix + name.toUpperCase(), version);
-      log.info('using %s version %s', name, version);
+      log.info('clients:initialized', 'name:%s version:%s', name, version);
       found();
     });
   }, function (err) {
     if (err) {
       return done(err);
     }
-    log.info('all clients initialized');
+    log.info('clients:initialized');
     done();
   });
 };

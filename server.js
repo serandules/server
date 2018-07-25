@@ -25,21 +25,20 @@ mongoose.connect(mongourl, {
 var db = mongoose.connection;
 
 db.on('error', function (err) {
-    log.error('mongodb connection error: %e', err);
+    log.error('db:errored', err);
 });
 
 db.once('open', function () {
-    log.info('connected to mongodb');
+    log.info('db:opened');
     server.start(function (err) {
         if (err) {
-            log.error(err);
+            log.error('server:errored', err);
             return process.exit(1);
         }
     });
 });
 
 process.on('uncaughtException', function (err) {
-    log.debug('uncaughtException ' + err);
-    log.debug(err.stack);
+    log.error('uncaught:threw', err);
     process.exit(1);
 });

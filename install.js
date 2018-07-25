@@ -11,8 +11,8 @@ var server = require('./index');
 
 server.install(function (err, modules) {
     if (err) {
-        log.error(err);
+        log.error('modules:errored', err);
         throw err;
     }
-    log.info('modules were installed successfully');
+    log.info('modules:installed');
 });

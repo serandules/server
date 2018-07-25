@@ -122,7 +122,7 @@ exports.install = function (done) {
       if (err) {
         return installed(err);
       }
-      log.info('installed version %s of module %s', module.version, module.name);
+      log.info('modules:installed', 'name:%s version:%s', module.version, module.name);
       installed();
     });
   }, done);
@@ -181,17 +181,17 @@ exports.start = function (done) {
         }
         routes(router);
         app.use(module.prefix, router);
-        log.info('registering %s %s under %s', module.type, module.name, name);
+        log.info('modules:registered', 'domain:%s name:%s type:%s', name, module.name, module.type);
       }
       host = format(serverHost, {sub: name});
       apps.use(vhost(host, app));
-      log.info('registered host %s', host);
+      log.info('hosts:registered', 'name:%s', host);
     }
     apps.use(function (err, req, res, next) {
       if (err.status) {
         return res.pond(errors.badRequest());
       }
-      log.error(err);
+      log.error('server-error:errored', err);
       res.pond(errors.serverError());
     });
     apps.use(function (req, res, next) {
@@ -202,7 +202,7 @@ exports.start = function (done) {
       if (err) {
         return done(err);
       }
-      log.info('started server at port %s', port);
+      log.info('server:started', 'port:%s', port);
       done();
     });
   });
