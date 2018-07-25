@@ -12,8 +12,13 @@ WORKDIR /srv/www/server
 # a wildcard is used to ensure both package.json AND package-lock.json are copied where available (npm@5+)
 COPY package*.json ./
 
+# install logrotate
 RUN apt install -y logrotate
 COPY .logrotate /etc/logrotate.d/server
+
+# configure logz.io
+RUN mkdir -p /etc/pki/tls/certs
+RUN wget https://raw.githubusercontent.com/logzio/public-certificates/master/COMODORSADomainValidationSecureServerCA.crt -P /etc/pki/tls/certs
 
 RUN npm install --only=production
 
