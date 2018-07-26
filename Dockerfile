@@ -8,6 +8,9 @@ ARG GITHUB_PASSWORD
 # set the working directory to /srv/www/server
 WORKDIR /srv/www/server
 
+# update apt
+RUN apt update
+
 # install app dependencies
 # a wildcard is used to ensure both package.json AND package-lock.json are copied where available (npm@5+)
 COPY package*.json ./
