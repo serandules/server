@@ -1,5 +1,5 @@
 # use an official node runtime as a parent image
-FROM node:10-debug
+FROM node:10
 
 ARG ENV
 ARG GITHUB_USERNAME
