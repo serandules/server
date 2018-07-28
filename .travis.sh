@@ -21,6 +21,9 @@ Object.keys(dev).forEach(function (name) {
 console.log(services);
 EOL`)
 
+# backup package.json
+mv package.json package.json-backup
+
 mkdir -p $SANDBOX
 cd $SANDBOX
 rm -rf ./*
@@ -31,8 +34,14 @@ do
     if [ -d "service-${SERVICE}/test" ]; then
         mkdir -p ${CURRENT}/test/${SERVICE}
         mv service-${SERVICE}/test/* ${CURRENT}/test/${SERVICE}
+        mv service-${SERVICE}/package.json ${CURRENT}
+        cd ${CURRENT}
+        npm install --only=dev
+        cd $SANDBOX
     fi
 done
 
 cd $CURRENT
+
+mv package.json-backup package.json
 
