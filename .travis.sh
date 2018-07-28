@@ -7,7 +7,7 @@ CURRENT=`pwd`
 echo $CURRENT
 
 declare -a SERVICES=(`node -c << EOL
-var dev = require('./env/development.json');
+var dev = require('./env/travis.json');
 var services = '';
 Object.keys(dev).forEach(function (name) {
     if (name.indexOf('SERVICE_') !== 0) {
