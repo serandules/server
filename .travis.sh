@@ -40,8 +40,16 @@ do
     git clone https://github.com/serandules/service-${SERVICE}.git
     if [ -d "service-${SERVICE}/test" ]; then
         mkdir -p ${CURRENT}/test/${SERVICE}
+
+        # remove unwanted files
+        rm service-${SERVICE}/test/index.js
+        rm service-${SERVICE}/test/mocha.js
+        rm service-${SERVICE}/test/mocha.opts
+
+        # copy test files
         mv service-${SERVICE}/test/* ${CURRENT}/test/${SERVICE}
         mv service-${SERVICE}/package.json ${CURRENT}
+
         cd ${CURRENT}
         npm install --only=dev
         cd $SANDBOX
