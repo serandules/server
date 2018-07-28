@@ -36,6 +36,7 @@ Object.keys(travis).forEach(function (name) {
     services += services ? ' ' + service : service;
 });
 console.log(services);
+EOL
 # temp end
 
 # backup package.json
