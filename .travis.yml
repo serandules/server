@@ -17,4 +17,4 @@ services:
   - mongodb
   - redis-server
 before_script:
-  - sh .travis.sh
+  - bash .travis.sh
