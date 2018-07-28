@@ -6,38 +6,22 @@ CURRENT=`pwd`
 
 echo "current directory ${CURRENT}"
 
-declare -a SERVICES=(`node -e << EOL
-var travis = require('./env/travis.json');
-var services = '';
-Object.keys(travis).forEach(function (name) {
-    if (name.indexOf('SERVICE_') !== 0) {
-        return;
-    }
-    var service = name.replace('SERVICE_', '').replace('_', '-').toLowerCase();
-    var val = travis[name].split(':');
-    var branch = val[0];
-    services += services ? ' ' + service : service;
-});
-console.log(services);
+declare -a SERVICES=(`node -p << EOL
+(function () {
+    var travis = require('./env/travis.json');
+    var services = '';
+    Object.keys(travis).forEach(function (name) {
+        if (name.indexOf('SERVICE_') !== 0) {
+            return;
+        }
+        var service = name.replace('SERVICE_', '').replace('_', '-').toLowerCase();
+        var val = travis[name].split(':');
+        var branch = val[0];
+        services += services ? ' ' + service : service;
+    });
+    return services;
+}());
 EOL`)
-
-# temp
-node -e << EOL
-var travis = require('./env/travis.json');
-var services = '';
-console.log(travis);
-Object.keys(travis).forEach(function (name) {
-    if (name.indexOf('SERVICE_') !== 0) {
-        return;
-    }
-    var service = name.replace('SERVICE_', '').replace('_', '-').toLowerCase();
-    var val = travis[name].split(':');
-    var branch = val[0];
-    services += services ? ' ' + service : service;
-});
-console.log(services);
-EOL
-# temp end
 
 # backup package.json
 mv package.json package.json-backup
