@@ -6,7 +6,7 @@ CURRENT=`pwd`
 
 echo "current directory ${CURRENT}"
 
-declare -a SERVICES=(`node -c << EOL
+declare -a SERVICES=(`node -e << EOL
 var travis = require('./env/travis.json');
 var services = '';
 Object.keys(travis).forEach(function (name) {
@@ -22,7 +22,7 @@ console.log(services);
 EOL`)
 
 # temp
-node -c << EOL
+node -e << EOL
 var travis = require('./env/travis.json');
 var services = '';
 console.log(travis);
