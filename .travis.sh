@@ -21,12 +21,29 @@ Object.keys(travis).forEach(function (name) {
 console.log(services);
 EOL`)
 
+# temp
+node -c << EOL
+var travis = require('./env/travis.json');
+var services = '';
+console.log(travis);
+Object.keys(travis).forEach(function (name) {
+    if (name.indexOf('SERVICE_') !== 0) {
+        return;
+    }
+    var service = name.replace('SERVICE_', '').replace('_', '-').toLowerCase();
+    var val = travis[name].split(':');
+    var branch = val[0];
+    services += services ? ' ' + service : service;
+});
+console.log(services);
+# temp end
+
 # backup package.json
 mv package.json package.json-backup
 
 mkdir -p $SANDBOX
 cd $SANDBOX
-echo "sanbox directory ${SANDBOX}"
+echo "sandbox directory ${SANDBOX}"
 
 echo $SERVICES
 
