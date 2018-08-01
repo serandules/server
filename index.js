@@ -139,7 +139,7 @@ exports.start = function (done) {
     apps.use(serandi.pond);
     apps.use(throttle.ips());
     apps.use(compression());
-    apps.use(cors());
+    apps.use(cors({origin: /\.serandives\.com$/}));
     apps.get('/status', function (req, res) {
       res.json({
         status: 'healthy'
