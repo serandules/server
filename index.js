@@ -103,6 +103,25 @@ var findClients = function () {
   return o;
 };
 
+var corz = cors(function (req, next) {
+  var origin = req.header('Origin') || '';
+  if (/https?:\/\/.*\.serandives\.com$/.test(origin)) {
+    return next(null, {origin: true});
+  }
+  var token = req.token;
+  if (!token) {
+    return next(null, {origin: false});
+  }
+  var cors = token.cors || [];
+  if (cors.indexOf('*') !== -1) {
+    return next(null, {origin: true});
+  }
+  if (cors.indexOf(origin) !== -1) {
+    return next(null, {origin: true});
+  }
+  next(null, {origin: false});
+});
+
 var server;
 
 var modules = findServices().concat(findLocals()).concat(findClients());
@@ -139,7 +158,7 @@ exports.start = function (done) {
     apps.use(serandi.pond);
     apps.use(throttle.ips());
     apps.use(compression());
-    apps.use(cors({origin: /\.serandives\.com$/}));
+    apps.use(corz);
     apps.get('/status', function (req, res) {
       res.json({
         status: 'healthy'
