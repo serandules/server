@@ -5,6 +5,7 @@ var _ = require('lodash');
 var async = require('async');
 var vhost = require('vhost');
 var express = require('express');
+var cors = require('cors');
 var compression = require('compression');
 var format = require('string-template');
 var utils = require('utils');
@@ -137,6 +138,7 @@ exports.start = function (done) {
     var serverHost = nconf.get('SERVER_HOST');
     apps.use(serandi.pond);
     apps.use(throttle.ips());
+    apps.use(cors());
     apps.use(compression());
     apps.get('/status', function (req, res) {
       res.json({
