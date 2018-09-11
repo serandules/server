@@ -23,6 +23,7 @@ COPY .logrotate /etc/logrotate.d/server
 RUN curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-6.3.2-amd64.deb
 RUN dpkg -i filebeat-6.3.2-amd64.deb
 COPY .filebeat.yml /etc/filebeat/filebeat.yml
+RUN chmod go-w /etc/filebeat/filebeat.yml
 
 
 # configure logz.io
