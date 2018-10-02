@@ -189,7 +189,7 @@ exports.start = function (done) {
     }
     apps.use(function (err, req, res, next) {
       if (err.status) {
-        return res.pond(errors.badRequest());
+        return res.pond(err);
       }
       log.error('server-error:errored', err);
       res.pond(errors.serverError());

@@ -4,6 +4,7 @@
   "SERVICE_CLIENTS": "master:accounts:/apis/v/clients",
   "SERVICE_USERS": "master:accounts:/apis/v/users",
   "SERVICE_TOKENS": "master:accounts:/apis/v/tokens",
+  "SERVICE_OTPS": "master:accounts:/apis/v/otps",
   "SERVICE_MENUS": "master:accounts:/apis/v/menus",
   "SERVICE_LOCATIONS": "master:accounts:/apis/v/locations",
   "SERVICE_VEHICLE_MAKES": "master:autos:/apis/v/vehicle-makes",
