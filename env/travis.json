@@ -6,6 +6,7 @@
   "SERVICE_TOKENS": "master:accounts:/apis/v/tokens",
   "SERVICE_OTPS": "master:accounts:/apis/v/otps",
   "SERVICE_MENUS": "master:accounts:/apis/v/menus",
+  "SERVICE_BINARIES": "master:accounts:/apis/v/binaries",
   "SERVICE_LOCATIONS": "master:accounts:/apis/v/locations",
   "SERVICE_VEHICLE_MAKES": "master:autos:/apis/v/vehicle-makes",
   "SERVICE_VEHICLE_MODELS": "master:autos:/apis/v/vehicle-models",
