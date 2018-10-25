@@ -1,4 +1,5 @@
 {
+  "SPACE": "serandives.com",
   "SERVICES": "true",
   "SERVICE_CONFIGS": "master:accounts:/apis/v/configs",
   "SERVICE_CLIENTS": "master:accounts:/apis/v/clients",

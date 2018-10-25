@@ -156,54 +156,58 @@ exports.start = function (done) {
       domain.push(module);
     });
     var i;
-    var module;
-    var name;
-    var app;
-    var modulez;
-    var router;
-    var domain;
     var host;
-    for (name in domains) {
-      if (!domains.hasOwnProperty(name)) {
-        continue;
-      }
-      app = express();
-      modulez = domains[name];
-      for (i = 0; i < modulez.length; i++) {
-        module = modulez[i];
-        router = express();
-        router.use(serandi.locate(module.prefix + '/'));
-        var routes;
-        try {
-          routes = require(module.path || module.name);
-        } catch (e) {
-          return done(e);
-        }
-        routes(router);
-        app.use(module.prefix, router);
-        log.info('modules:registered', 'domain:%s name:%s type:%s', name, module.name, module.type);
-      }
-      host = format(serverHost, {sub: name});
-      apps.use(vhost(host, app));
-      log.info('hosts:registered', 'name:%s', host);
-    }
-    apps.use(function (err, req, res, next) {
-      if (err.status) {
-        return res.pond(err);
-      }
-      log.error('server-error:errored', err);
-      res.pond(errors.serverError());
-    });
-    apps.use(function (req, res, next) {
-      res.pond(errors.notFound());
-    });
-    var port = nconf.get('PORT');
-    server = apps.listen(port, function (err) {
+    async.eachSeries(Object.keys(domains), function (domain, domainDone) {
+        var app = express();
+        var modulez = domains[domain];
+        async.eachSeries(modulez, function (module, moduleDone) {
+          var router = express();
+          router.use(serandi.locate(module.prefix + '/'));
+          var routes;
+          try {
+            routes = require(module.path || module.name);
+          } catch (e) {
+            return done(e);
+          }
+          routes(router, function (err) {
+            if (err) {
+              return moduleDone(err);
+            }
+            app.use(module.prefix, router);
+            log.info('modules:registered', 'domain:%s name:%s type:%s', domain, module.name, module.type);
+            moduleDone();
+          });
+        }, function (err) {
+          if (err) {
+            return domainDone(err);
+          }
+          host = format(serverHost, {sub: domain});
+          apps.use(vhost(host, app));
+          log.info('hosts:registered', 'name:%s', host);
+          domainDone();
+        });
+    }, function (err) {
       if (err) {
         return done(err);
       }
-      log.info('server:started', 'port:%s', port);
-      done();
+      apps.use(function (err, req, res, next) {
+        if (err.status) {
+          return res.pond(err);
+        }
+        log.error('server-error:errored', err);
+        res.pond(errors.serverError());
+      });
+      apps.use(function (req, res, next) {
+        res.pond(errors.notFound());
+      });
+      var port = nconf.get('PORT');
+      server = apps.listen(port, function (err) {
+        if (err) {
+          return done(err);
+        }
+        log.info('server:started', 'port:%s', port);
+        done();
+      });
     });
   });
 };
