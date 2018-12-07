@@ -5,6 +5,7 @@ var _ = require('lodash');
 var async = require('async');
 var vhost = require('vhost');
 var express = require('express');
+var morgan = require('morgan');
 var cors = require('cors');
 var compression = require('compression');
 var format = require('string-template');
@@ -136,6 +137,7 @@ exports.start = function (done) {
     var domains = {};
     var apps = express();
     var serverHost = nconf.get('SERVER_HOST');
+    apps.use(morgan(':remote-addr :method :url :status :res[content-length] - :response-time ms'));
     apps.use(serandi.pond);
     apps.use(throttle.ips());
     apps.use(cors());
