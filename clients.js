@@ -43,13 +43,6 @@ var findRelease = function (envs, name, done) {
 exports.init = function (done) {
   var envs = nconf.get();
   async.each(Object.keys(envs), function (env, found) {
-    if (env.indexOf(clientPrefix) !== 0) {
-      return found();
-    }
-    var version = envs[env];
-    if (version !== 'master') {
-      return found();
-    }
     var client = findClient(envs, env);
     if (!client) {
       return found();
