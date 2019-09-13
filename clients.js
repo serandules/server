@@ -9,7 +9,18 @@ var Releases = require('model-releases');
 var clientPrefix = 'CLIENT_';
 var indexPrefix = 'INDEX_';
 
-var find = function (envs, name, done) {
+var findClient = function (envs, env) {
+  if (env !== 'CLIENT' && env.indexOf(clientPrefix) !== 0) {
+    return null;
+  }
+  var splits = envs[env].split(':');
+  return {
+    name: splits[0],
+    version: splits[1]
+  };
+};
+
+var findRelease = function (envs, name, done) {
   var env = indexPrefix + name.toUpperCase();
   var version = envs[env];
   if (version) {
@@ -39,8 +50,15 @@ exports.init = function (done) {
     if (version !== 'master') {
       return found();
     }
+    var client = findClient(envs, env);
+    if (!client) {
+      return found();
+    }
+    if (client.version !== 'master') {
+      return found();
+    }
     var name = env.substring(clientPrefix.length).toLowerCase();
-    find(envs, name, function (err, env, version) {
+    findRelease(envs, client.name, function (err, env, version) {
       if (err) {
         return found(err);
       }
