@@ -15,6 +15,7 @@
   "SERVICE_OTPS": "master:accounts:/apis/v/otps",
   "SERVICE_GRANTS": "master:accounts:/apis/v/grants",
   "SERVICE_MENUS": "master:accounts:/apis/v/menus",
+  "SERVICE_PAGES": "master:accounts:/apis/v/pages",
   "SERVICE_BINARIES": "master:accounts:/apis/v/binaries",
   "SERVICE_LOCATIONS": "master:accounts:/apis/v/locations",
   "SERVICE_CONTACTS": "master:accounts:/apis/v/contacts",
