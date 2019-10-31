@@ -19,7 +19,7 @@
     "express": "4.*",
     "morgan": "1.9.1",
     "cors": "2.8.4",
-    "mongoose": "5.1.8",
+    "mongoose": "5.7.7",
     "lodash": "4.17.4",
     "string-template": "1.0.0",
     "logger": "serandules/logger#master",
