@@ -97,7 +97,7 @@ var findClients = function () {
       prefix: '/'
     });
   }
-  prefix  += '_';
+  prefix += '_';
   for (key in all) {
     if (!all.hasOwnProperty(key)) {
       continue;
@@ -123,6 +123,27 @@ var findClients = function () {
 
 var servicing = function (module) {
   return module.type === 'local' || module.type === 'service';
+};
+
+var subdomain = function (url) {
+  url = url.substring(url.indexOf('://') + 3);
+  url = url.substring(0, url.indexOf('/'));
+  url = url.substring(0, url.lastIndexOf('.'));
+  return url.substring(0, url.lastIndexOf('.'));
+};
+
+var redirects = function (apps) {
+  var from = nconf.get('REDIRECTS');
+  if (!from) {
+    return;
+  }
+  from = from.split('|');
+  from.forEach(function (host) {
+    apps.use(vhost(host, function (req, res) {
+      var host = req.get('host');
+      res.redirect(301, utils.resolve(subdomain(host) + '://' + req.path));
+    }));
+  });
 };
 
 var server;
@@ -163,6 +184,7 @@ exports.start = function (done) {
     apps.use(morgan(':remote-addr :method :url :status :res[content-length] - :response-time ms'));
     apps.use(serandi.pond);
     apps.use(throttle.ips());
+    redirects(apps);
     apps.use(cors());
     apps.use(compression());
     apps.get('/status', function (req, res) {
@@ -181,39 +203,39 @@ exports.start = function (done) {
       subdomain.push(module);
     });
     async.eachSeries(Object.keys(subdomains), function (sub, subdomainDone) {
-        var app = express();
-        var modulez = subdomains[sub];
-        async.eachSeries(modulez, function (module, moduleDone) {
-          var router = express();
-          if (servicing(module)) {
-            router.use(serandi.locate(module.prefix + '/'));
-          }
-          var routes;
-          try {
-            routes = require(module.path || module.name);
-          } catch (e) {
-            return done(e);
-          }
-          routes(router, function (err) {
-            if (err) {
-              return moduleDone(err);
-            }
-            app.use(module.prefix, router);
-            log.info('modules:registered', 'subdomain:%s name:%s type:%s', sub, module.name, module.type);
-            moduleDone();
-          });
-        }, function (err) {
+      var app = express();
+      var modulez = subdomains[sub];
+      async.eachSeries(modulez, function (module, moduleDone) {
+        var router = express();
+        if (servicing(module)) {
+          router.use(serandi.locate(module.prefix + '/'));
+        }
+        var routes;
+        try {
+          routes = require(module.path || module.name);
+        } catch (e) {
+          return done(e);
+        }
+        routes(router, function (err) {
           if (err) {
-            return subdomainDone(err);
+            return moduleDone(err);
           }
-          var prefix = format(subdomain, {
-            subdomain: sub ? sub + '.' : ''
-          });
-          var host = prefix + domain;
-          apps.use(vhost(host, app));
-          log.info('hosts:registered', 'name:%s', host);
-          subdomainDone();
+          app.use(module.prefix, router);
+          log.info('modules:registered', 'subdomain:%s name:%s type:%s', sub, module.name, module.type);
+          moduleDone();
         });
+      }, function (err) {
+        if (err) {
+          return subdomainDone(err);
+        }
+        var prefix = format(subdomain, {
+          subdomain: sub ? sub + '.' : ''
+        });
+        var host = prefix + domain;
+        apps.use(vhost(host, app));
+        log.info('hosts:registered', 'name:%s', host);
+        subdomainDone();
+      });
     }, function (err) {
       if (err) {
         return done(err);

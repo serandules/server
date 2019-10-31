@@ -2,6 +2,7 @@
   "UNTHROTTLE": true,
   "DOMAIN": "serandives.com",
   "SUBDOMAIN": "development.{subdomain}",
+  "REDIRECTS": "development.serandives.lk|development.www.serandives.lk",
   "SERVICES": "true",
   "CLIENT": "www:master",
   "CLIENT_WWW": "www:master",

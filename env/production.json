@@ -1,6 +1,7 @@
 {
   "DOMAIN": "serandives.com",
   "SUBDOMAIN": "{subdomain}",
+  "REDIRECTS": "serandives.lk|www.serandives.lk",
   "SERVICES": "true",
   "CLIENT": "www:master",
   "CLIENT_WWW": "www:master",
