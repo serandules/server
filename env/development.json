@@ -9,6 +9,7 @@
   "CLIENT_ACCOUNTS": "accounts:master",
   "CLIENT_ADMIN": "admin:master",
   "CLIENT_AUTOS": "autos:master",
+  "CLIENT_REALESTATES": "realestates:master",
   "SERVICE_CONFIGS": "master:www:/apis/v/configs",
   "SERVICE_CLIENTS": "master:accounts:/apis/v/clients",
   "SERVICE_USERS": "master:accounts:/apis/v/users",
@@ -21,5 +22,6 @@
   "SERVICE_CONTACTS": "master:accounts:/apis/v/contacts",
   "SERVICE_VEHICLE_MAKES": "master:autos:/apis/v/vehicle-makes",
   "SERVICE_VEHICLE_MODELS": "master:autos:/apis/v/vehicle-models",
-  "SERVICE_VEHICLES": "master:autos:/apis/v/vehicles"
+  "SERVICE_VEHICLES": "master:autos:/apis/v/vehicles",
+  "SERVICE_REALESTATES": "master:realestates:/apis/v/realestates"
 }
