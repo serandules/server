@@ -1,6 +1,9 @@
 {
   "SPACE": "serandives.com",
   "SERVICES": "true",
+  "FACEBOOK_TOKEN_URI": "https://graph.facebook.com/v2.3/oauth/access_token",
+  "FACEBOOK_PROFILE_URI": "https://graph.facebook.com/me",
+  "FACEBOOK_LOGIN_URI": "https://www.facebook.com/dialog/oauth",
   "SERVICE_CONFIGS": "master:www:/apis/v/configs",
   "SERVICE_CLIENTS": "master:accounts:/apis/v/clients",
   "SERVICE_USERS": "master:accounts:/apis/v/users",
