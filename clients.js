@@ -28,19 +28,7 @@ var findRelease = function (envs, name, done) {
   if (version) {
     return done(null, env, version);
   }
-  Releases.findOne({
-    type: 'serandomps',
-    name: name,
-    version: release.version
-  }, function (err, release) {
-    if (err) {
-      return done(err);
-    }
-    if (!release) {
-      return done(new Error(util.format('cannot find a release for client: %s', name)));
-    }
-    done(null, env, release.version);
-  });
+  done(null, env, release.version);
 };
 
 exports.init = function (done) {
