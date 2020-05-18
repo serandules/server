@@ -6,6 +6,8 @@ var nconf = require('nconf');
 
 var Releases = require('model-releases');
 
+var release = require('./.release.json');
+
 var clientPrefix = 'CLIENT_';
 var indexPrefix = 'INDEX_';
 
@@ -28,8 +30,9 @@ var findRelease = function (envs, name, done) {
   }
   Releases.findOne({
     type: 'serandomps',
-    name: name
-  }).sort({_id: -1}).exec(function (err, release) {
+    name: name,
+    version: release.version
+  }, function (err, release) {
     if (err) {
       return done(err);
     }
