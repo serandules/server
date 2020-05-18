@@ -19,4 +19,4 @@ phases:
     commands:
       - echo Build completed
 artifacts:
-    files: .codepipeline.json
+    files: .release.json
