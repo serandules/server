@@ -8,16 +8,16 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - printf '{"version":"%s","imageUri":"%s.dkr.ecr.%s.amazonaws.com/%s:%s"}' "$PIPELINE_EXECUTION_ID" "$AWS_ACCOUNT_ID" "$AWS_DEFAULT_REGION" "$IMAGE_REPO_NAME" "$PIPELINE_EXECUTION_ID"> .release.json
-      - docker build --build-arg ENV=$ENV --build-arg GITHUB_USERNAME=$GITHUB_USERNAME --build-arg GITHUB_PASSWORD=$GITHUB_PASSWORD -t $IMAGE_REPO_NAME:$PIPELINE_EXECUTION_ID .
-      - docker tag $IMAGE_REPO_NAME:$PIPELINE_EXECUTION_ID $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$PIPELINE_EXECUTION_ID
+      - printf '{"version":"%s","imageUri":"%s.dkr.ecr.%s.amazonaws.com/%s:%s"}' "$RELEASE_TAG" "$AWS_ACCOUNT_ID" "$AWS_DEFAULT_REGION" "$IMAGE_REPO_NAME" "$RELEASE_TAG"> .release.json
+      - docker build --build-arg ENV=$ENV --build-arg GITHUB_USERNAME=$GITHUB_USERNAME --build-arg GITHUB_PASSWORD=$GITHUB_PASSWORD -t $IMAGE_REPO_NAME:$RELEASE_TAG .
+      - docker tag $IMAGE_REPO_NAME:$RELEASE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$RELEASE_TAG
       - echo Logging in to Amazon ECR...
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       - echo Pushing the Docker image...
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$PIPELINE_EXECUTION_ID
-      - printf '[{"name":"$IMAGE_REPO_NAME","imageUri":"%s.dkr.ecr.%s.amazonaws.com/%s:%s"}]' "$AWS_ACCOUNT_ID" "$AWS_DEFAULT_REGION" "$IMAGE_REPO_NAME" "$PIPELINE_EXECUTION_ID"> .codepipeline.json
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$RELEASE_TAG
+      - printf '[{"name":"$IMAGE_REPO_NAME","imageUri":"%s.dkr.ecr.%s.amazonaws.com/%s:%s"}]' "$AWS_ACCOUNT_ID" "$AWS_DEFAULT_REGION" "$IMAGE_REPO_NAME" "$RELEASE_TAG"> .codepipeline.json
   post_build:
     commands:
       - echo Build completed
 artifacts:
-    files: .codepipeline.json
+  files: .codepipeline.json
