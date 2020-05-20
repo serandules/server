@@ -1,10 +1,7 @@
 var log = require('logger')('server:clients');
 var util = require('util');
 var async = require('async');
-var fs = require('fs');
 var nconf = require('nconf');
-
-var Releases = require('model-releases');
 
 var release = require('./.release.json');
 
