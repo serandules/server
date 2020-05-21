@@ -229,7 +229,7 @@ exports.start = function (done) {
           return subdomainDone(err);
         }
         var prefix = format(subdomain, {
-          subdomain: sub ? sub + '.' : ''
+          subdomain: sub
         });
         var host = prefix + domain;
         apps.use(vhost(host, app));

@@ -1,8 +1,8 @@
 {
   "UNTHROTTLE": true,
   "DOMAIN": "serandives.com",
-  "SUBDOMAIN": "development.{subdomain}",
-  "REDIRECTS": "development.serandives.lk|development.www.serandives.lk",
+  "SUBDOMAIN": "{subdomain}.development.",
+  "REDIRECTS": "development.serandives.lk|www.development.serandives.lk",
   "SERVICES": "true",
   "FACEBOOK_TOKEN_URI": "http://localhost:4040/facebook/token",
   "FACEBOOK_PROFILE_URI": "http://localhost:4040/facebook/profile",
