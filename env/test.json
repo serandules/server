@@ -1,5 +1,6 @@
 {
   "DOMAIN": "serandives.com",
+  "EMAIL_DOMAIN": "serandives.com",
   "SUBDOMAIN": "test",
   "SERVICES": "true",
   "FACEBOOK_TOKEN_URI": "https://graph.facebook.com/v2.3/oauth/access_token",

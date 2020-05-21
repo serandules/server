@@ -1,5 +1,6 @@
 {
   "DOMAIN": "serandives.com",
+  "EMAIL_DOMAIN": "serandives.com",
   "SUBDOMAIN": "{subdomain}",
   "REDIRECTS": "serandives.lk|www.serandives.lk",
   "SERVICES": "true",

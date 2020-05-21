@@ -228,9 +228,7 @@ exports.start = function (done) {
         if (err) {
           return subdomainDone(err);
         }
-        var prefix = format(subdomain, {
-          subdomain: sub
-        });
+        var prefix = sub ? format(subdomain, {subdomain: sub}) + '.' : '';
         var host = prefix + domain;
         apps.use(vhost(host, app));
         log.info('hosts:registered', 'name:%s', host);
