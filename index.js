@@ -181,11 +181,14 @@ exports.start = function (done) {
     var domain = utils.domain();
     var subdomain = utils.subdomain();
 
+    apps.disable('x-powered-by');
     apps.use(morgan(':remote-addr :method :url :status :res[content-length] - :response-time ms'));
     apps.use(serandi.pond);
     apps.use(throttle.ips());
     redirects(apps);
-    apps.use(cors());
+    apps.use(cors({
+      exposedHeaders: ['Content-Type', 'Link']
+    }));
     apps.use(compression());
     apps.get('/status', function (req, res) {
       res.json({
@@ -204,9 +207,11 @@ exports.start = function (done) {
     });
     async.eachSeries(Object.keys(subdomains), function (sub, subdomainDone) {
       var app = express();
+      app.disable('x-powered-by');
       var modulez = subdomains[sub];
       async.eachSeries(modulez, function (module, moduleDone) {
         var router = express();
+        router.disable('x-powered-by');
         if (servicing(module)) {
           router.use(serandi.locate(module.prefix + '/'));
         }
