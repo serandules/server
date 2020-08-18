@@ -5,7 +5,7 @@
   "SUBDOMAIN": "{subdomain}",
   "REDIRECTS": "development.serandives.lk|www.development.serandives.lk",
   "SERVICES": "true",
-  "FACEBOOK_TOKEN_URI": "http://localhost:4040/facebook/token",
+  "FACEBOOK_TOKEN_URI": "http://development.serandives.com:4040/facebook/token",
   "FACEBOOK_PROFILE_URI": "http://localhost:4040/facebook/profile",
   "FACEBOOK_LOGIN_URI": "https://www.facebook.com/dialog/oauth",
   "CLIENT": "www:master",
