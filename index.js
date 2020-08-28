@@ -125,13 +125,6 @@ var servicing = function (module) {
   return module.type === 'local' || module.type === 'service';
 };
 
-var subdomain = function (url) {
-  url = url.substring(url.indexOf('://') + 3);
-  url = url.substring(0, url.indexOf('/'));
-  url = url.substring(0, url.lastIndexOf('.'));
-  return url.substring(0, url.lastIndexOf('.'));
-};
-
 var redirects = function (apps) {
   var from = nconf.get('REDIRECTS');
   if (!from) {
@@ -140,8 +133,7 @@ var redirects = function (apps) {
   from = from.split('|');
   from.forEach(function (host) {
     apps.use(vhost(host, function (req, res) {
-      var host = req.get('host');
-      res.redirect(301, utils.resolve(subdomain(host) + '://' + req.path));
+      res.redirect(301, utils.resolve('www://'));
     }));
   });
 };
