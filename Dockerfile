@@ -28,7 +28,8 @@ RUN chmod go-w /etc/filebeat/filebeat.yml
 
 # configure logz.io
 RUN mkdir -p /etc/pki/tls/certs
-RUN wget https://raw.githubusercontent.com/logzio/public-certificates/master/COMODORSADomainValidationSecureServerCA.crt -P /etc/pki/tls/certs
+# RUN wget https://raw.githubusercontent.com/logzio/public-certificates/master/COMODORSADomainValidationSecureServerCA.crt -P /etc/pki/tls/certs
+RUN wget https://raw.githubusercontent.com/logzio/public-certificates/master/TrustExternalCARoot_and_USERTrustRSAAAACA.crt -P /etc/pki/tls/certs/COMODORSADomainValidationSecureServerCA.crt
 
 RUN npm install --only=production
 
