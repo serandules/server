@@ -26,7 +26,8 @@
     "utils": "serandules/utils#master",
     "errors": "serandules/errors#master",
     "serandi": "serandules/serandi#master",
-    "throttle": "serandules/throttle#master"
+    "throttle": "serandules/throttle#master",
+    "models": "serandules/models#master"
   },
   "devDependencies": {
     "mocha": "3.2.0",

@@ -3,20 +3,5 @@
   "SERVICES": "true",
   "CLIENT_ACCOUNTS": "master",
   "CLIENT_ADMIN": "master",
-  "CLIENT_AUTOS": "master",
-  "SERVICE_CONFIGS": "master:apis:/v/configs",
-  "SERVICE_CLIENTS": "master:apis:/v/clients",
-  "SERVICE_USERS": "master:apis:/v/users",
-  "SERVICE_TOKENS": "master:apis:/v/tokens",
-  "SERVICE_OTPS": "master:apis:/v/otps",
-  "SERVICE_GRANTS": "master:apis:/v/grants",
-  "SERVICE_PAGES": "master:apis:/v/pages",
-  "SERVICE_MESSAGES": "master:apis:/v/messages",
-  "SERVICE_BINARIES": "master:apis:/v/binaries",
-  "SERVICE_LOCATIONS": "master:apis:/v/locations",
-  "SERVICE_CONTACTS": "master:apis:/v/contacts",
-  "SERVICE_VEHICLE_MAKES": "master:apis:/v/vehicle-makes",
-  "SERVICE_VEHICLE_MODELS": "master:apis:/v/vehicle-models",
-  "SERVICE_VEHICLES": "master:apis:/v/vehicles",
-  "SERVICE_REALESTATES": "master:apis:/v/realestates"
+  "CLIENT_AUTOS": "master"
 }

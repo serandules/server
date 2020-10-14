@@ -1,5 +1,4 @@
 var log = require('logger')('server');
-var shell = require('shelljs');
 var nconf = require('nconf');
 var _ = require('lodash');
 var async = require('async');
@@ -10,71 +9,14 @@ var cors = require('cors');
 var compression = require('compression');
 var format = require('string-template');
 var utils = require('utils');
-var util = require('util');
 var serandi = require('serandi');
 var throttle = require('throttle');
 var errors = require('errors');
 var clients = require('./clients');
 
-var env = utils.env();
+var services = require('services');
 
-var findServices = function () {
-  var key;
-  var name;
-  var o = [];
-  var type = 'service';
-  var prefix = type.toUpperCase() + '_';
-  var all = nconf.get();
-  for (key in all) {
-    if (!all.hasOwnProperty(key)) {
-      continue;
-    }
-    if (key.indexOf(prefix) !== 0) {
-      continue;
-    }
-    name = key.substring(prefix.length);
-    name = name.toLowerCase().replace('_', '-');
-    var value = all[key];
-    var splits = value.split(':');
-    o.push({
-      type: 'service',
-      name: type + '-' + name,
-      version: splits[0],
-      subdomain: splits[1],
-      prefix: splits[2]
-    });
-  }
-  return o;
-};
-
-var findLocals = function () {
-  var key;
-  var name;
-  var o = [];
-  var type = 'local';
-  var prefix = type.toUpperCase() + '_';
-  var all = nconf.get();
-  for (key in all) {
-    if (!all.hasOwnProperty(key)) {
-      continue;
-    }
-    if (key.indexOf(prefix) !== 0) {
-      continue;
-    }
-    name = key.substring(prefix.length);
-    name = name.toLowerCase().replace('_', '-');
-    var value = all[key];
-    var splits = value.split(':');
-    o.push({
-      type: 'local',
-      name: type + '-' + name,
-      path: splits[0],
-      subdomain: splits[1],
-      prefix: splits[2]
-    });
-  }
-  return o;
-};
+var server;
 
 var findClients = function () {
   var key;
@@ -121,10 +63,6 @@ var findClients = function () {
   return o;
 };
 
-var servicing = function (module) {
-  return module.type === 'local' || module.type === 'service';
-};
-
 var redirects = function (apps) {
   var from = nconf.get('REDIRECTS');
   if (!from) {
@@ -138,88 +76,39 @@ var redirects = function (apps) {
   });
 };
 
-var server;
+var startClients = function (apps, domain, subdomain, done) {
+  var clientz = findClients();
 
-var modules = findServices().concat(findLocals()).concat(findClients());
+  var subdomains = {};
 
-exports.install = function (done) {
-  var services = !!nconf.get('SERVICES');
-  if (!services) {
-    return done();
-  }
-  async.eachLimit(modules, 1, function (module, installed) {
-    if (module.path) {
-      return installed();
-    }
-    var cmd = 'export GITHUB_USERNAME=%s; export GITHUB_PASSWORD=%s; npm install serandules/%s#%s';
-    cmd = util.format(cmd, nconf.get('GITHUB_USERNAME'), nconf.get('GITHUB_PASSWORD'), module.name, module.version);
-    shell.exec(cmd, function (err) {
-      if (err) {
-        return installed(err);
-      }
-      log.info('modules:installed', 'name:%s version:%s', module.version, module.name);
-      installed();
-    });
-  }, done);
-};
+  clientz.forEach(function (client) {
+    var subdomain = subdomains[client.subdomain] || (subdomains[client.subdomain] = []);
+    subdomain.push(client);
+  });
 
-exports.start = function (done) {
   clients.init(function (err) {
     if (err) {
       return done(err);
     }
-    var subdomains = {};
-    var apps = express();
-    var domain = utils.domain();
-    var subdomain = utils.subdomain();
 
-    apps.disable('x-powered-by');
-    apps.use(morgan(':remote-addr :method :url :status :res[content-length] - :response-time ms'));
-    apps.use(serandi.pond);
-    apps.use(throttle.ips());
-    redirects(apps);
-    apps.use(cors({
-      exposedHeaders: ['Content-Type', 'Link']
-    }));
-    apps.use(compression());
-    apps.get('/status', function (req, res) {
-      res.json({
-        status: 'healthy'
-      });
-    });
-    if (nconf.get('SERVER_TRUST_PROXY')) {
-      apps.enable('trust proxy');
-    }
-    if (nconf.get('SERVER_SSL')) {
-      apps.use(serandi.ssl);
-    }
-    modules.forEach(function (module) {
-      var subdomain = subdomains[module.subdomain] || (subdomains[module.subdomain] = []);
-      subdomain.push(module);
-    });
     async.eachSeries(Object.keys(subdomains), function (sub, subdomainDone) {
       var app = express();
       app.disable('x-powered-by');
-      var modulez = subdomains[sub];
-      async.eachSeries(modulez, function (module, moduleDone) {
-        var router = express();
-        router.disable('x-powered-by');
-        if (servicing(module)) {
-          router.use(serandi.locate(module.prefix + '/'));
-        }
+      var clientz = subdomains[sub];
+      async.eachSeries(clientz, function (client, clientDone) {
         var routes;
         try {
-          routes = require(module.path || module.name);
+          routes = require(client.name);
         } catch (e) {
           return done(e);
         }
-        routes(router, function (err) {
+
+        routes(app, function (err) {
           if (err) {
-            return moduleDone(err);
+            return clientDone(err);
           }
-          app.use(module.prefix, router);
-          log.info('modules:registered', 'subdomain:%s name:%s type:%s', sub, module.name, module.type);
-          moduleDone();
+          log.info('modules:registered', 'subdomain:%s name:%s type:client', sub, client.name);
+          clientDone();
         });
       }, function (err) {
         if (err) {
@@ -231,10 +120,71 @@ exports.start = function (done) {
         log.info('hosts:registered', 'name:%s', host);
         subdomainDone();
       });
-    }, function (err) {
+    }, done);
+  });
+};
+
+var startServices = function (apps, domain, subdomain, done) {
+  var app = express();
+  app.disable('x-powered-by');
+
+  services(app, function (err) {
+    if (err) {
+      return done(err);
+    }
+
+    var prefix = format(subdomain, {subdomain: 'apis'}) + '.';
+    var host = prefix + domain;
+    apps.use(vhost(host, app));
+
+    log.info('hosts:registered', 'name:%s', host);
+
+    done();
+  });
+};
+
+exports.stop = function (done) {
+  server.close(done);
+};
+
+exports.start = function (done) {
+  var apps = express();
+  var domain = utils.domain();
+  var subdomain = utils.subdomain();
+
+  apps.disable('x-powered-by');
+  apps.use(morgan(':remote-addr :method :url :status :res[content-length] - :response-time ms'));
+  apps.use(serandi.pond);
+  apps.use(throttle.ips());
+  redirects(apps);
+  apps.use(cors({
+    exposedHeaders: ['Content-Type', 'Link']
+  }));
+  apps.use(compression());
+
+  apps.get('/status', function (req, res) {
+    res.json({
+      status: 'healthy'
+    });
+  });
+
+  if (nconf.get('SERVER_TRUST_PROXY')) {
+    apps.enable('trust proxy');
+  }
+
+  if (nconf.get('SERVER_SSL')) {
+    apps.use(serandi.ssl);
+  }
+
+  startClients(apps, domain, subdomain, function (err) {
+    if (err) {
+      return done(err);
+    }
+    startServices(apps, domain, subdomain, function (err) {
       if (err) {
         return done(err);
       }
+
       apps.use(function (err, req, res, next) {
         if (err.status) {
           return res.pond(err);
@@ -242,9 +192,11 @@ exports.start = function (done) {
         log.error('server-error:errored', err);
         res.pond(errors.serverError());
       });
+
       apps.use(function (req, res, next) {
         res.pond(errors.notFound());
       });
+
       var port = nconf.get('PORT');
       server = apps.listen(port, function (err) {
         if (err) {
@@ -255,8 +207,4 @@ exports.start = function (done) {
       });
     });
   });
-};
-
-exports.stop = function (done) {
-  server.close(done);
 };

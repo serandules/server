@@ -35,9 +35,6 @@ RUN npm install --only=production
 # bundle app source
 COPY . .
 
-# install services
-RUN node install.js
-
 # make port 80 available to the world outside this container
 EXPOSE 80
 
